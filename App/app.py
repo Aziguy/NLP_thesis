@@ -24,8 +24,7 @@ def get_prediction_proba(docx):
 	results = pipe_lr.predict_proba([docx])
 	return results
 
-emotions_emoji_dict = {1:"😠", 4:"🤗", 5:"😂", 3:"😐", 2:"😔", "sadness":"😔", "shame":"😳", "surprise":"😮"}
-
+emotions_emoji_dict = {0:"😔", 1:"😠", 2:"😔", 3:"😐", 4:"🤗", 5:"😂"}
 
 # Main Application
 def main():
@@ -34,7 +33,6 @@ def main():
 	choice = st.sidebar.selectbox("Menu",menu)
 	create_page_visited_table()
 	create_emotionclf_table()
-
 	if choice == "Home":
 		add_page_visited_details("Home",datetime.now())
 		st.subheader("Home-Emotion In Text")
@@ -49,7 +47,7 @@ def main():
 			# Apply Fxn Here
 			prediction = predict_emotions(raw_text)
 			probability = get_prediction_proba(raw_text)
-
+			
 			add_prediction_details(raw_text,prediction,np.max(probability),datetime.now())
 
 			with col1:
@@ -71,8 +69,6 @@ def main():
 
 				fig = alt.Chart(proba_df_clean).mark_bar().encode(x='emotions',y='probability',color='emotions')
 				st.altair_chart(fig,use_container_width=True)
-
-
 
 	elif choice == "Monitor":
 		add_page_visited_details("Monitor",datetime.now())
@@ -97,14 +93,9 @@ def main():
 			pc = alt.Chart(prediction_count).mark_bar().encode(x='Prediction',y='Counts',color='Prediction')
 			st.altair_chart(pc,use_container_width=True)	
 
-
-
 	else:
 		st.subheader("About")
 		add_page_visited_details("About",datetime.now())
-
-
-
 
 
 if __name__ == '__main__':
