@@ -24,18 +24,18 @@ def get_prediction_proba(docx):
 	results = pipe_lr.predict_proba([docx])
 	return results
 
-emotions_emoji_dict = {0:"😔", 1:"😠", 2:"😔", 3:"😐", 4:"🤗", 5:"😂"}
+emotions_emoji_dict = {1:"😠", 2:"😔", 3:"😐", 4:"🤗", 5:"😂"}
 
 # Main Application
 def main():
-	st.title("Emotion Classifier App")
+	st.title("Predict Emotion App (Sentiment analysis)")
 	menu = ["Home","Monitor","About"]
 	choice = st.sidebar.selectbox("Menu",menu)
 	create_page_visited_table()
 	create_emotionclf_table()
 	if choice == "Home":
 		add_page_visited_details("Home",datetime.now())
-		st.subheader("Home-Emotion In Text")
+		st.subheader("Home-Emotion or sentiment In Text")
 
 		with st.form(key='emotion_clf_form'):
 			raw_text = st.text_area("Type Here")
@@ -56,7 +56,7 @@ def main():
 
 				st.success("Prediction")
 				emoji_icon = emotions_emoji_dict[prediction]
-				st.write("{}:{}".format(prediction,emoji_icon))
+				st.write("{} : {}".format(prediction,emoji_icon))
 				st.write("Confidence:{}".format(np.max(probability)))
 
 			with col2:
@@ -85,7 +85,7 @@ def main():
 			p = px.pie(pg_count,values='Counts',names='Pagename')
 			st.plotly_chart(p,use_container_width=True)
 
-		with st.beta_expander('Emotion Classifier Metrics'):
+		with st.beta_expander('Predict Emotion Metrics'):
 			df_emotions = pd.DataFrame(view_all_prediction_details(),columns=['Rawtext','Prediction','Probability','Time_of_Visit'])
 			st.dataframe(df_emotions)
 
