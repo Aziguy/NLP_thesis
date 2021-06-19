@@ -12,7 +12,6 @@ from datetime import datetime
 import joblib 
 pipe_lr = joblib.load(open("models/emotion_classifier_pipe_lr_29_mai_2021.pkl","rb"))
 
-
 # Track Utils
 from track_utils import create_page_visited_table,add_page_visited_details,view_all_page_visited_details,add_prediction_details,view_all_prediction_details,create_emotionclf_table
 
@@ -35,6 +34,7 @@ def main():
 	choice = st.sidebar.selectbox("Menu",menu)
 	create_page_visited_table()
 	create_emotionclf_table()
+
 	if choice == "Home":
 		add_page_visited_details("Home",datetime.now())
 		st.subheader("Home-Emotion In Text")
@@ -49,7 +49,7 @@ def main():
 			# Apply Fxn Here
 			prediction = predict_emotions(raw_text)
 			probability = get_prediction_proba(raw_text)
-			
+
 			add_prediction_details(raw_text,prediction,np.max(probability),datetime.now())
 
 			with col1:
@@ -60,8 +60,6 @@ def main():
 				emoji_icon = emotions_emoji_dict[prediction]
 				st.write("{}:{}".format(prediction,emoji_icon))
 				st.write("Confidence:{}".format(np.max(probability)))
-
-
 
 			with col2:
 				st.success("Prediction Probability")
